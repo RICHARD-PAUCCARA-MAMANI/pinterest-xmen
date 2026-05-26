@@ -1,0 +1,21 @@
+# Dependencies (if any in the future)
+node_modules/
+package-lock.json
+
+# Temp files
+gh-tmp/
+/tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+*.orig
