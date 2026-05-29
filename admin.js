@@ -455,6 +455,28 @@ function handleDeleteProduct(id) {
   }
 }
 
+// ===== DARK MODE =====
+function initDarkMode() {
+  const toggle = document.getElementById('adminDarkToggle');
+  const icon = toggle.querySelector('i');
+  const saved = localStorage.getItem('mdj_dark_mode');
+  // Apply saved preference, or fall back to system preference
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = saved !== null ? saved === 'true' : prefersDark;
+  if (isDark) {
+    document.body.classList.add('dark-mode');
+    icon.className = 'fa-solid fa-sun';
+  } else {
+    document.body.classList.remove('dark-mode');
+    icon.className = 'fa-solid fa-moon';
+  }
+  toggle.addEventListener('click', () => {
+    const nowDark = document.body.classList.toggle('dark-mode');
+    icon.className = nowDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    localStorage.setItem('mdj_dark_mode', nowDark);
+  });
+}
+
 // ===== EVENT LISTENERS =====
 function setupListeners() {
   adminLoginBtn.addEventListener('click', handleAdminLogin);
@@ -472,6 +494,7 @@ function setupListeners() {
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   setupListeners();
+  initDarkMode();
   document.getElementById('adminPasswordInput').focus();
   console.log('🔐 Panel Admin — Mercado Don José');
   console.log(`📦 ${productManager.count} productos · ${orderHistory.count} pedidos`);

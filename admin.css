@@ -528,6 +528,198 @@ input, textarea, select { font-family: inherit; outline: none; font-size: inheri
   transform: translateX(-50%) translateY(0);
 }
 
+/* ===== DARK MODE ===== */
+/* Auto dark mode via system preference */
+@media (prefers-color-scheme: dark) {
+  :root { --auto-dark: true; }
+}
+
+/* Dark mode variables applied via .dark-mode class */
+.dark-mode {
+  --green: #3CB371;
+  --green-dark: #4ADE80;
+  --green-light: #1A3A2A;
+  --orange: #FF8C42;
+  --red: #EF4444;
+  --bg: #0F1117;
+  --bg-white: #1A1D27;
+  --bg-secondary: #242733;
+  --bg-hover: #2D3040;
+  --text-primary: #E8EAED;
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #6B7280;
+  --border: #2D3040;
+  --border-light: #242733;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.5);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.6);
+}
+
+.dark-mode .admin-header { border-bottom-color: var(--border); }
+
+.dark-mode .admin-header-link {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+
+.dark-mode .admin-header-link:hover {
+  background: var(--green);
+  color: #fff;
+}
+
+.dark-mode .admin-table {
+  background: var(--bg-white);
+}
+
+.dark-mode .admin-table th {
+  background: var(--bg-secondary);
+  color: var(--text-tertiary);
+  border-bottom-color: var(--border);
+}
+
+.dark-mode .admin-table td {
+  border-bottom-color: var(--border-light);
+}
+
+.dark-mode .admin-table tbody tr:hover { background: var(--bg-secondary); }
+
+.dark-mode .admin-table .product-cell-emoji { background: var(--bg-secondary); }
+
+.dark-mode .admin-stat-card {
+  background: var(--bg-white);
+}
+
+.dark-mode .admin-stat-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.dark-mode .admin-login-card {
+  background: var(--bg-white);
+}
+
+.dark-mode .admin-login-icon-wrap {
+  background: var(--green-light);
+}
+
+.dark-mode .admin-login-form-group input {
+  background: var(--bg-secondary);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.dark-mode .admin-login-form-group input:focus {
+  border-color: var(--green);
+  background: var(--bg-white);
+}
+
+.dark-mode .admin-empty-state i { color: var(--bg-hover); }
+
+.dark-mode .admin-category-badge {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.dark-mode .admin-badge.oferta { background: #2D1F1A; }
+.dark-mode .admin-badge.nuevo { background: var(--green-light); }
+
+.dark-mode .admin-action.edit:hover { background: var(--green-light); }
+.dark-mode .admin-action.del:hover { background: #2D1518; }
+.dark-mode .admin-action.view:hover { background: #1A2530; }
+
+.dark-mode .admin-logout-btn {
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.dark-mode .admin-logout-btn:hover {
+  border-color: var(--red);
+  color: var(--red);
+  background: #2D1518;
+}
+
+.dark-mode .admin-form-modal {
+  background: var(--bg-white);
+}
+
+.dark-mode .admin-form-header {
+  border-bottom-color: var(--border);
+}
+
+.dark-mode .admin-form-close:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.dark-mode .admin-fg input,
+.dark-mode .admin-fg textarea,
+.dark-mode .admin-fg select {
+  background: var(--bg-secondary);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.dark-mode .admin-fg input:focus,
+.dark-mode .admin-fg textarea:focus,
+.dark-mode .admin-fg select:focus {
+  border-color: var(--green);
+  background: var(--bg-white);
+  box-shadow: 0 0 0 4px rgba(60,179,113,0.08);
+}
+
+.dark-mode .admin-btn-cancel {
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.dark-mode .admin-btn-cancel:hover { background: var(--bg-hover); }
+
+.dark-mode .admin-status-select {
+  background: var(--bg-secondary);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.dark-mode .admin-modal-overlay {
+  background: rgba(0,0,0,0.7);
+}
+
+.dark-mode .admin-fg label { color: var(--text-primary); }
+
+.dark-mode .admin-tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+/* Dark mode toggle button */
+.admin-dark-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 16px;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.admin-dark-toggle:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.dark-mode .admin-dark-toggle {
+  background: var(--bg-hover);
+  color: var(--orange);
+}
+
+.dark-mode .admin-dark-toggle:hover {
+  background: #2D3040;
+}
+
 /* ===== FORM MODAL ===== */
 .admin-modal-overlay {
   position: fixed;
