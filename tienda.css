@@ -1888,16 +1888,33 @@ input, textarea, select { font-family: inherit; outline: none; font-size: inheri
   gap: 10px;
 }
 
+.admin-table .product-cell-img {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .admin-table .product-cell-emoji {
   font-size: 24px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-sm);
   background: var(--bg-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.checkout-item-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 6px;
 }
 
 .admin-table .product-cell-name {

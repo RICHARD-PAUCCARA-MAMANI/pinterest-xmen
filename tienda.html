@@ -498,8 +498,14 @@
           <input type="number" id="adminFormPrice" step="0.10" min="0" placeholder="0.00" />
         </div>
         <div class="form-group">
-          <label for="adminFormEmoji">Emoji</label>
+          <label for="adminFormEmoji">Emoji (fallback)</label>
           <input type="text" id="adminFormEmoji" placeholder="🍚" maxlength="8" />
+        </div>
+      </div>
+      <div class="admin-form-row">
+        <div class="form-group">
+          <label for="adminFormImageUrl">URL de imagen</label>
+          <input type="url" id="adminFormImageUrl" placeholder="https://images.unsplash.com/photo-..." />
         </div>
       </div>
       <div class="admin-form-row">
@@ -519,16 +525,6 @@
       <div class="form-group">
         <label for="adminFormDesc">Descripción</label>
         <textarea id="adminFormDesc" placeholder="Descripción del producto" rows="2"></textarea>
-      </div>
-      <div class="admin-form-row">
-        <div class="form-group">
-          <label for="adminFormBadge">Etiqueta (opcional)</label>
-          <select id="adminFormBadge">
-            <option value="">Sin etiqueta</option>
-            <option value="Oferta">🔥 Oferta</option>
-            <option value="Nuevo">✨ Nuevo</option>
-          </select>
-        </div>
       </div>
       <div class="admin-form-actions">
         <button class="admin-btn-cancel" id="adminFormCancel">Cancelar</button>
