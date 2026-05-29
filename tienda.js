@@ -232,6 +232,15 @@ class OrderHistory {
     return new Set(this._orders.map(o => o.phone)).size;
   }
 
+  getById(id) {
+    return this._orders.find(o => o.id === id);
+  }
+
+  getOrdersByUser(email) {
+    if (!email) return [];
+    return this._orders.filter(o => o.userEmail === email);
+  }
+
   get count() {
     return this._orders.length;
   }
@@ -365,6 +374,75 @@ class Cart {
   }
 }
 
+// ===== USER AUTH =====
+class UserAuth {
+  constructor() {
+    this.currentUser = null;
+    this._listeners = [];
+    this._load();
+  }
+
+  onChange(fn) {
+    this._listeners.push(fn);
+  }
+
+  _notify() {
+    this._listeners.forEach(fn => fn(this.currentUser));
+  }
+
+  login(email, password) {
+    if (!email || !password) return { success: false, error: 'Todos los campos son obligatorios' };
+    try {
+      const users = JSON.parse(localStorage.getItem('mdj_users') || '[]');
+      const user = users.find(u => u.email === email && u.password === password);
+      if (!user) return { success: false, error: 'Credenciales inválidas' };
+      this.currentUser = { email: user.email, name: user.name };
+      this._save();
+      this._notify();
+      return { success: true };
+    } catch { return { success: false, error: 'Error al iniciar sesión' }; }
+  }
+
+  signup(name, email, password) {
+    if (!name || !email || !password) return { success: false, error: 'Todos los campos son obligatorios' };
+    if (password.length < 6) return { success: false, error: 'La contraseña debe tener al menos 6 caracteres' };
+    try {
+      const users = JSON.parse(localStorage.getItem('mdj_users') || '[]');
+      if (users.find(u => u.email === email)) return { success: false, error: 'Este correo ya está registrado' };
+      users.push({ name, email, password, createdAt: Date.now() });
+      localStorage.setItem('mdj_users', JSON.stringify(users));
+      this.currentUser = { email, name };
+      this._save();
+      this._notify();
+      return { success: true };
+    } catch { return { success: false, error: 'Error al registrarse' }; }
+  }
+
+  logout() {
+    this.currentUser = null;
+    localStorage.removeItem('mdj_current_user');
+    this._notify();
+  }
+
+  isLoggedIn() {
+    return this.currentUser !== null;
+  }
+
+  _save() {
+    try { localStorage.setItem('mdj_current_user', JSON.stringify(this.currentUser)); } catch {}
+  }
+
+  _load() {
+    try {
+      const saved = localStorage.getItem('mdj_current_user');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.email) this.currentUser = parsed;
+      }
+    } catch {}
+  }
+}
+
 // ===== UTILITY FUNCTIONS =====
 function formatPrice(amount) {
   return 'S/ ' + amount.toFixed(2);
@@ -396,9 +474,9 @@ function getProductImage(product) {
 const productManager = new ProductManager();
 const orderHistory = new OrderHistory();
 const cart = new Cart();
+const userAuth = new UserAuth();
 let currentCategory = 'all';
 let currentSearch = '';
-let adminLoggedIn = false;
 
 // ===== DOM REFERENCES =====
 // Navigation
@@ -469,47 +547,7 @@ const toast = document.getElementById('toast');
 const heroWhatsApp = document.getElementById('heroWhatsApp');
 const whatsappFloat = document.getElementById('whatsappFloat');
 
-// Admin
-const adminLink = document.getElementById('adminLink');
-const adminOverlay = document.getElementById('adminOverlay');
-const adminModal = document.getElementById('adminModal');
-const adminClose = document.getElementById('adminClose');
-const adminLogin = document.getElementById('adminLogin');
-const adminDashboard = document.getElementById('adminDashboard');
-const adminPasswordInput = document.getElementById('adminPasswordInput');
-const adminLoginBtn = document.getElementById('adminLoginBtn');
-const adminLoginError = document.getElementById('adminLoginError');
-const adminLogoutBtn = document.getElementById('adminLogoutBtn');
-const adminLoggedUser = document.getElementById('adminLoggedUser');
-const adminTabs = document.querySelectorAll('.admin-tab');
-const adminTabContents = document.querySelectorAll('.admin-tab-content');
-const adminProductsBody = document.getElementById('adminProductsBody');
-const adminOrdersBody = document.getElementById('adminOrdersBody');
-const adminOrdersEmpty = document.getElementById('adminOrdersEmpty');
-const adminOrdersTableContainer = document.getElementById('adminOrdersTableContainer');
-const adminAddProductBtn = document.getElementById('adminAddProductBtn');
-const statProducts = document.getElementById('statProducts');
-const statOrders = document.getElementById('statOrders');
-const statRevenue = document.getElementById('statRevenue');
-const statClients = document.getElementById('statClients');
 
-// Admin Form
-const adminFormOverlay = document.getElementById('adminFormOverlay');
-const adminFormModal = document.getElementById('adminFormModal');
-const adminFormClose = document.getElementById('adminFormClose');
-const adminFormCancel = document.getElementById('adminFormCancel');
-const adminFormTitle = document.getElementById('adminFormTitle');
-const adminFormProductId = document.getElementById('adminFormProductId');
-const adminFormName = document.getElementById('adminFormName');
-const adminFormCategory = document.getElementById('adminFormCategory');
-const adminFormPrice = document.getElementById('adminFormPrice');
-const adminFormEmoji = document.getElementById('adminFormEmoji');
-const adminFormImageUrl = document.getElementById('adminFormImageUrl');
-const adminFormDesc = document.getElementById('adminFormDesc');
-const adminFormBadge = document.getElementById('adminFormBadge');
-const adminFormStock = document.getElementById('adminFormStock');
-const adminFormSave = document.getElementById('adminFormSave');
-const adminFormError = document.getElementById('adminFormError');
 
 // Order History (client)
 const orderHistoryLink = document.getElementById('orderHistoryLink');
@@ -519,6 +557,32 @@ const orderHistoryClose = document.getElementById('orderHistoryClose');
 const orderHistoryEmpty = document.getElementById('orderHistoryEmpty');
 const orderHistoryList = document.getElementById('orderHistoryList');
 const orderHistoryItems = document.getElementById('orderHistoryItems');
+
+// Auth
+const authOverlay = document.getElementById('authOverlay');
+const authModal = document.getElementById('authModal');
+const authClose = document.getElementById('authClose');
+const authTitle = document.getElementById('authTitle');
+const loginForm = document.getElementById('loginForm');
+const signupForm = document.getElementById('signupForm');
+const loginEmail = document.getElementById('loginEmail');
+const loginPassword = document.getElementById('loginPassword');
+const loginSubmit = document.getElementById('loginSubmit');
+const loginError = document.getElementById('loginError');
+const signupName = document.getElementById('signupName');
+const signupEmail = document.getElementById('signupEmail');
+const signupPassword = document.getElementById('signupPassword');
+const signupSubmit = document.getElementById('signupSubmit');
+const signupError = document.getElementById('signupError');
+const showSignup = document.getElementById('showSignup');
+const showLogin = document.getElementById('showLogin');
+const authLoggedIn = document.getElementById('authLoggedIn');
+const authAvatar = document.getElementById('authAvatar');
+const authUserName = document.getElementById('authUserName');
+const authUserEmail = document.getElementById('authUserEmail');
+const authLogoutBtn = document.getElementById('authLogoutBtn');
+const userAuthLink = document.getElementById('userAuthLink');
+const userAuthLinkText = document.getElementById('userAuthLinkText');
 
 // ===== TOAST =====
 function showToast(message) {
@@ -841,6 +905,7 @@ function handleCheckout() {
 
     // Save order to history
     const order = orderHistory.addOrder({
+      userEmail: userAuth.isLoggedIn() ? userAuth.currentUser.email : null,
       name,
       phone,
       address: `${address}, ${district}`,
@@ -950,176 +1015,82 @@ function buildWhatsAppOrder() {
   window.open(`https://wa.me/51999888777?text=${message}`, '_blank');
 }
 
-// ===== ADMIN PANEL =====
-const ADMIN_PASSWORD = 'admin123';
-
-function openAdmin() {
+// ===== USER AUTH UI =====
+function openAuth() {
   closeCart();
   closeCheckout();
   closeOrderHistory();
-  adminOverlay.classList.remove('hidden');
-  adminModal.classList.remove('hidden');
+  authOverlay.classList.remove('hidden');
+  authModal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
-
-  if (adminLoggedIn) {
-    showAdminDashboard();
-  } else {
-    adminLogin.classList.remove('hidden');
-    adminDashboard.classList.add('hidden');
-    adminPasswordInput.value = '';
-    adminLoginError.textContent = '';
-    setTimeout(() => adminPasswordInput.focus(), 200);
-  }
+  showLoginForm();
 }
 
-function closeAdmin() {
-  adminOverlay.classList.add('hidden');
-  adminModal.classList.add('hidden');
+function closeAuth() {
+  authOverlay.classList.add('hidden');
+  authModal.classList.add('hidden');
   document.body.style.overflow = '';
 }
 
-function handleAdminLogin() {
-  const pass = adminPasswordInput.value.trim();
-  if (pass === ADMIN_PASSWORD) {
-    adminLoggedIn = true;
-    adminLogin.classList.add('hidden');
-    showAdminDashboard();
+function showLoginForm() {
+  loginForm.classList.remove('hidden');
+  signupForm.classList.add('hidden');
+  authLoggedIn.classList.add('hidden');
+  authTitle.innerHTML = '<i class="fa-solid fa-user"></i> Iniciar Sesión';
+  loginError.textContent = '';
+  signupError.textContent = '';
+}
+
+function showSignupForm() {
+  loginForm.classList.add('hidden');
+  signupForm.classList.remove('hidden');
+  authLoggedIn.classList.add('hidden');
+  authTitle.innerHTML = '<i class="fa-solid fa-user-plus"></i> Crear Cuenta';
+  loginError.textContent = '';
+  signupError.textContent = '';
+}
+
+function updateAuthUI() {
+  if (userAuth.isLoggedIn()) {
+    userAuthLinkText.textContent = userAuth.currentUser.name;
+    userAuthLink.querySelector('i').className = 'fa-solid fa-user-check';
   } else {
-    adminLoginError.textContent = 'Contraseña incorrecta';
-    adminPasswordInput.value = '';
-    adminPasswordInput.focus();
+    userAuthLinkText.textContent = 'Iniciar Sesión';
+    userAuthLink.querySelector('i').className = 'fa-solid fa-user';
   }
 }
 
-function handleAdminLogout() {
-  adminLoggedIn = false;
-  adminLogin.classList.remove('hidden');
-  adminDashboard.classList.add('hidden');
-  adminPasswordInput.value = '';
-  adminLoginError.textContent = '';
-}
-
-function showAdminDashboard() {
-  adminDashboard.classList.remove('hidden');
-  adminLoggedUser.textContent = 'Admin';
-  switchAdminTab('products');
-  renderAdminProducts();
-  renderAdminOrders();
-  renderAdminStats();
-}
-
-function switchAdminTab(tabId) {
-  adminTabs.forEach(tab => {
-    tab.classList.toggle('active', tab.dataset.tab === tabId);
-  });
-  adminTabContents.forEach(content => {
-    content.classList.toggle('active', content.id === 'adminTab' + tabId.charAt(0).toUpperCase() + tabId.slice(1));
-  });
-}
-
-// Render admin products table
-function renderAdminProducts() {
-  const products = productManager.getAll();
-  adminProductsBody.innerHTML = '';
-
-  products.forEach(p => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>
-        <div class="product-cell">
-          ${getProductImage(p) 
-            ? `<img class="product-cell-img" src="${p.imageUrl}?w=60&h=60&fit=crop" alt="${escapeHtml(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-               <div class="product-cell-emoji" style="display:none">${p.emoji || '📦'}</div>`
-            : `<div class="product-cell-emoji">${p.emoji || '📦'}</div>`}
-          <div>
-            <div class="product-cell-name">${escapeHtml(p.name)}</div>
-          </div>
-        </div>
-      </td>
-      <td><span class="category-cell">${getCategoryName(p.category)}</span></td>
-      <td><span class="price-cell">${formatPrice(p.price)}</span></td>
-      <td><span class="stock-cell ${p.stock <= 0 ? 'out' : ''}">${p.stock !== undefined ? p.stock : '—'}</span></td>
-      <td class="badge-cell">${p.badge ? `<span class="badge-tag ${p.badge === 'Oferta' ? 'oferta' : 'nuevo'}">${p.badge}</span>` : '—'}</td>
-      <td>
-        <div class="admin-actions">
-          <button class="admin-action-btn edit" data-action="edit-product" data-id="${p.id}" title="Editar"><i class="fa-solid fa-pen"></i></button>
-          <button class="admin-action-btn delete" data-action="delete-product" data-id="${p.id}" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
-        </div>
-      </td>
-    `;
-    adminProductsBody.appendChild(tr);
-  });
-
-  // Event listeners for edit/delete
-  adminProductsBody.querySelectorAll('[data-action="edit-product"]').forEach(btn => {
-    btn.addEventListener('click', () => openAdminForm(parseInt(btn.dataset.id)));
-  });
-  adminProductsBody.querySelectorAll('[data-action="delete-product"]').forEach(btn => {
-    btn.addEventListener('click', () => handleDeleteProduct(parseInt(btn.dataset.id)));
-  });
-}
-
-// Render admin orders table
-function renderAdminOrders() {
-  const orders = orderHistory.getAll();
-
-  if (orders.length === 0) {
-    adminOrdersEmpty.classList.remove('hidden');
-    adminOrdersTableContainer.classList.add('hidden');
-    return;
+function handleLogin() {
+  const email = loginEmail.value.trim();
+  const password = loginPassword.value;
+  const result = userAuth.login(email, password);
+  if (result.success) {
+    closeAuth();
+    updateAuthUI();
+    showToast('👋 ¡Bienvenido, ' + userAuth.currentUser.name + '!');
+  } else {
+    loginError.textContent = result.error;
   }
+}
 
-  adminOrdersEmpty.classList.add('hidden');
-  adminOrdersTableContainer.classList.remove('hidden');
+function handleSignup() {
+  const name = signupName.value.trim();
+  const email = signupEmail.value.trim();
+  const password = signupPassword.value;
+  const result = userAuth.signup(name, email, password);
+  if (result.success) {
+    closeAuth();
+    updateAuthUI();
+    showToast('✅ Cuenta creada. ¡Bienvenido, ' + name + '!');
+  } else {
+    signupError.textContent = result.error;
+  }
+}
 
-  adminOrdersBody.innerHTML = '';
-  orders.forEach(order => {
-    const statusMap = {
-      pending: 'Pendiente',
-      confirmed: 'Confirmado',
-      shipping: 'En envío',
-      delivered: 'Entregado',
-      cancelled: 'Cancelado'
-    };
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><strong>${order.id}</strong></td>
-      <td>${escapeHtml(order.name)}<br><small style="color:var(--text-tertiary)">${order.phone}</small></td>
-      <td class="price-cell">${formatPrice(order.total)}</td>
-      <td><small style="color:var(--text-tertiary)">${formatDate(order.createdAt)}</small></td>
-      <td>
-        <select class="status-select" data-action="change-status" data-id="${order.id}">
-          <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>⏳ Pendiente</option>
-          <option value="confirmed" ${order.status === 'confirmed' ? 'selected' : ''}>✅ Confirmado</option>
-          <option value="shipping" ${order.status === 'shipping' ? 'selected' : ''}>🚚 En envío</option>
-          <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>📦 Entregado</option>
-          <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>❌ Cancelado</option>
-        </select>
-      </td>
-      <td>
-        <div class="admin-actions">
-          <button class="admin-action-btn view" data-action="view-order" data-id="${order.id}" title="Ver detalle"><i class="fa-solid fa-eye"></i></button>
-        </div>
-      </td>
-    `;
-    adminOrdersBody.appendChild(tr);
-  });
-
-  // Status change handlers
-  adminOrdersBody.querySelectorAll('[data-action="change-status"]').forEach(sel => {
-    sel.addEventListener('change', () => {
-      const id = sel.dataset.id;
-      const newStatus = sel.value;
-      orderHistory.updateStatus(id, newStatus);
-      showToast(`Pedido ${id} actualizado a "${getStatusLabel(newStatus)}"`);
-      renderAdminStats();
-    });
-  });
-
-  // View order handlers
-  adminOrdersBody.querySelectorAll('[data-action="view-order"]').forEach(btn => {
-    btn.addEventListener('click', () => showOrderDetail(btn.dataset.id));
-  });
+function handleLogout() {
+  userAuth.logout();
+  updateAuthUI();
+  showToast('👋 Sesión cerrada');
 }
 
 function getStatusLabel(status) {
@@ -1133,144 +1104,11 @@ function formatDate(ts) {
     d.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
 }
 
-// Show order detail in a simple alert-style popup
-function showOrderDetail(orderId) {
-  const order = orderHistory.getById(orderId);
-  if (!order) return;
-
-  const itemsHtml = (order.items || []).map(i =>
-    `  ${i.productEmoji || '📦'} ${i.productName} x${i.quantity} = ${formatPrice(i.price * i.quantity)}`
-  ).join('\n');
-
-  const message =
-    `📋 Pedido: ${order.id}\n` +
-    `📅 ${formatDate(order.createdAt)}\n` +
-    `👤 ${order.name}\n` +
-    `📞 ${order.phone}\n` +
-    `📍 ${order.address}\n` +
-    `💳 ${order.payment}\n` +
-    `📌 Estado: ${getStatusLabel(order.status)}\n` +
-    (order.notes ? `📝 Notas: ${order.notes}\n` : '') +
-    `\n🛒 Productos:\n${itemsHtml}\n\n` +
-    `Subtotal: ${formatPrice(order.subtotal)}\n` +
-    `Envío: ${order.shipping === 0 ? 'Gratis' : formatPrice(order.shipping)}\n` +
-    `💵 TOTAL: ${formatPrice(order.total)}`;
-
-  alert(message);
-}
-
-// Render admin stats
-function renderAdminStats() {
-  statProducts.textContent = productManager.count;
-  statOrders.textContent = orderHistory.count;
-  statRevenue.textContent = formatPrice(orderHistory.totalRevenue);
-  statClients.textContent = orderHistory.uniqueClients;
-}
-
-// Admin product form
-function openAdminForm(productId) {
-  adminFormError.textContent = '';
-  adminFormProductId.value = '';
-
-  const catSelect = adminFormCategory;
-  catSelect.innerHTML = '';
-  CATEGORIES.forEach(cat => {
-    const opt = document.createElement('option');
-    opt.value = cat.id;
-    opt.textContent = cat.name;
-    catSelect.appendChild(opt);
-  });
-
-  if (productId) {
-    // Edit mode
-    const product = productManager.getById(productId);
-    if (!product) return;
-    adminFormTitle.innerHTML = '<i class="fa-solid fa-pen"></i> Editar Producto';
-    adminFormProductId.value = productId;
-    adminFormName.value = product.name;
-    adminFormCategory.value = product.category;
-    adminFormPrice.value = product.price;
-    adminFormEmoji.value = product.emoji || '';
-    adminFormImageUrl.value = product.imageUrl || '';
-    adminFormDesc.value = product.desc;
-    adminFormBadge.value = product.badge || '';
-    adminFormStock.value = product.stock !== undefined ? product.stock : 99;
-  } else {
-    // New product
-    adminFormTitle.innerHTML = '<i class="fa-solid fa-plus"></i> Nuevo Producto';
-    adminFormName.value = '';
-    adminFormCategory.value = CATEGORIES[0].id;
-    adminFormPrice.value = '';
-    adminFormEmoji.value = '';
-    adminFormImageUrl.value = '';
-    adminFormDesc.value = '';
-    adminFormBadge.value = '';
-    adminFormStock.value = '99';
-  }
-
-  adminFormOverlay.classList.remove('hidden');
-  adminFormModal.classList.remove('hidden');
-  setTimeout(() => adminFormName.focus(), 200);
-}
-
-function closeAdminForm() {
-  adminFormOverlay.classList.add('hidden');
-  adminFormModal.classList.add('hidden');
-}
-
-function handleSaveProduct() {
-  const id = adminFormProductId.value ? parseInt(adminFormProductId.value) : null;
-  const name = adminFormName.value.trim();
-  const category = adminFormCategory.value;
-  const price = adminFormPrice.value;
-  const emoji = adminFormEmoji.value.trim();
-  const imageUrl = adminFormImageUrl.value.trim();
-  const desc = adminFormDesc.value.trim();
-  const badge = adminFormBadge.value;
-  const stock = adminFormStock.value;
-
-  if (!name) { adminFormError.textContent = 'El nombre del producto es obligatorio'; adminFormName.focus(); return; }
-  if (!price || isNaN(price) || parseFloat(price) <= 0) { adminFormError.textContent = 'Ingresa un precio válido'; adminFormPrice.focus(); return; }
-  if (stock === '' || isNaN(stock) || parseInt(stock) < 0) { adminFormError.textContent = 'Ingresa un stock válido (0 o más)'; adminFormStock.focus(); return; }
-
-  const data = { name, category, price, emoji, imageUrl, desc, badge, stock };
-
-  if (id) {
-    productManager.update(id, data);
-    showToast('Producto actualizado correctamente');
-  } else {
-    productManager.add(data);
-    showToast('Producto agregado correctamente');
-  }
-
-  closeAdminForm();
-  renderAdminProducts();
-  renderAdminStats();
-  // Re-render public views
-  renderCategories();
-  renderFeatured();
-  renderProducts();
-}
-
-function handleDeleteProduct(id) {
-  const product = productManager.getById(id);
-  if (!product) return;
-  if (confirm(`¿Eliminar "${product.name}"?`)) {
-    productManager.delete(id);
-    showToast(`"${product.name}" eliminado`);
-    renderAdminProducts();
-    renderAdminStats();
-    renderCategories();
-    renderFeatured();
-    renderProducts();
-  }
-}
-
 // ===== ORDER HISTORY (CLIENT) =====
 function openOrderHistory() {
   closeCart();
   closeCheckout();
-  closeAdmin();
+  closeAuth();
   orderHistoryOverlay.classList.remove('hidden');
   orderHistoryModal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
@@ -1284,7 +1122,9 @@ function closeOrderHistory() {
 }
 
 function renderOrderHistory() {
-  const orders = orderHistory.getAll();
+  let orders = userAuth.isLoggedIn()
+    ? orderHistory.getOrdersByUser(userAuth.currentUser.email)
+    : orderHistory.getAll();
 
   if (orders.length === 0) {
     orderHistoryEmpty.classList.remove('hidden');
@@ -1465,37 +1305,38 @@ function setupEventListeners() {
     }
   });
 
-  // Admin
-  adminLink.addEventListener('click', (e) => {
+  // Auth
+  userAuthLink.addEventListener('click', (e) => {
     e.preventDefault();
-    openAdmin();
+    if (userAuth.isLoggedIn()) {
+      openAuth(); // Shows logged-in state
+      authLoggedIn.classList.remove('hidden');
+      loginForm.classList.add('hidden');
+      signupForm.classList.add('hidden');
+      authTitle.innerHTML = '<i class="fa-solid fa-user-check"></i> Mi Cuenta';
+      authUserName.textContent = userAuth.currentUser.name;
+      authUserEmail.textContent = userAuth.currentUser.email;
+      authAvatar.textContent = userAuth.currentUser.name.charAt(0).toUpperCase();
+    } else {
+      openAuth();
+    }
   });
 
-  adminOverlay.addEventListener('click', closeAdmin);
-  adminClose.addEventListener('click', closeAdmin);
+  authOverlay.addEventListener('click', closeAuth);
+  authClose.addEventListener('click', closeAuth);
 
-  adminPasswordInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') handleAdminLogin();
-  });
-  adminLoginBtn.addEventListener('click', handleAdminLogin);
-  adminLogoutBtn.addEventListener('click', handleAdminLogout);
+  showSignup.addEventListener('click', (e) => { e.preventDefault(); showSignupForm(); });
+  showLogin.addEventListener('click', (e) => { e.preventDefault(); showLoginForm(); });
 
-  // Admin tabs
-  adminTabs.forEach(tab => {
-    tab.addEventListener('click', () => switchAdminTab(tab.dataset.tab));
-  });
+  loginSubmit.addEventListener('click', handleLogin);
+  signupSubmit.addEventListener('click', handleSignup);
+  authLogoutBtn.addEventListener('click', handleLogout);
 
-  // Admin add product
-  adminAddProductBtn.addEventListener('click', () => openAdminForm(null));
-
-  // Admin form
-  adminFormOverlay.addEventListener('click', closeAdminForm);
-  adminFormClose.addEventListener('click', closeAdminForm);
-  adminFormCancel.addEventListener('click', closeAdminForm);
-  adminFormSave.addEventListener('click', handleSaveProduct);
-  adminFormName.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') adminFormCategory.focus();
-  });
+  loginEmail.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginPassword.focus(); });
+  loginPassword.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleLogin(); });
+  signupName.addEventListener('keydown', (e) => { if (e.key === 'Enter') signupEmail.focus(); });
+  signupEmail.addEventListener('keydown', (e) => { if (e.key === 'Enter') signupPassword.focus(); });
+  signupPassword.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSignup(); });
 
   // Order History (client)
   orderHistoryLink.addEventListener('click', (e) => {
@@ -1508,9 +1349,8 @@ function setupEventListeners() {
   // Keyboard: Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      if (!adminFormModal.classList.contains('hidden')) { closeAdminForm(); return; }
-      if (!adminModal.classList.contains('hidden')) { closeAdmin(); return; }
       if (!orderHistoryModal.classList.contains('hidden')) { closeOrderHistory(); return; }
+      closeAuth();
       closeCart();
       closeCheckout();
     }
@@ -1545,7 +1385,13 @@ function init() {
   renderFeatured();
   renderProducts();
   updateCartUI();
+  updateAuthUI();
   setupEventListeners();
+
+  // Listen for auth changes
+  userAuth.onChange(() => {
+    updateAuthUI();
+  });
 
   showPage('home');
 

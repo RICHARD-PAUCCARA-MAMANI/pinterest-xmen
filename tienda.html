@@ -209,9 +209,10 @@
         <a href="#" class="footer-link">Devoluciones</a>        <a href="#" class="footer-link">Términos y Condiciones</a>
         </div>
         <div class="footer-col">
-          <h4>Gestión</h4>
-          <a href="#" class="footer-link admin-link" id="adminLink"><i class="fa-solid fa-shield-halved"></i> Panel Admin</a>
+          <h4>Mi Cuenta</h4>
+          <a href="#" class="footer-link" id="userAuthLink"><i class="fa-solid fa-user"></i> <span id="userAuthLinkText">Iniciar Sesión</span></a>
           <a href="#" class="footer-link" id="orderHistoryLink"><i class="fa-solid fa-clock-rotate-left"></i> Mis Pedidos</a>
+          <a href="admin.html" class="footer-link"><i class="fa-solid fa-shield-halved"></i> Administración</a>
         </div>
         <div class="footer-col">
           <h4>Contacto</h4>
@@ -360,177 +361,59 @@
   <!-- ===== TOAST ===== -->
   <div class="toast" id="toast"></div>
 
-  <!-- ===== ADMIN PANEL ===== -->
-  <div class="modal-overlay hidden" id="adminOverlay"></div>
-  <div class="admin-modal" id="adminModal">
-    <div class="admin-header">
-      <h2><i class="fa-solid fa-shield-halved"></i> Panel de Administración</h2>
-      <div class="admin-header-actions">
-        <span class="admin-logged-user" id="adminLoggedUser"></span>
-        <button class="admin-logout-btn" id="adminLogoutBtn"><i class="fa-solid fa-right-from-bracket"></i></button>
-        <button class="checkout-close" id="adminClose"><i class="fa-solid fa-xmark"></i></button>
-      </div>
+  <!-- ===== USER AUTH MODAL ===== -->
+  <div class="modal-overlay hidden" id="authOverlay"></div>
+  <div class="auth-modal" id="authModal">
+    <div class="auth-header">
+      <h2 id="authTitle"><i class="fa-solid fa-user"></i> Iniciar Sesión</h2>
+      <button class="auth-close" id="authClose"><i class="fa-solid fa-xmark"></i></button>
     </div>
+    <div class="auth-body">
+      <!-- Login Form -->
+      <form class="auth-form" id="loginForm" onsubmit="return false">
+        <div class="auth-form-group">
+          <label for="loginEmail">Correo electrónico</label>
+          <input type="email" id="loginEmail" placeholder="tu@correo.com" />
+        </div>
+        <div class="auth-form-group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" placeholder="••••••" />
+        </div>
+        <button type="submit" class="auth-submit" id="loginSubmit"><i class="fa-solid fa-arrow-right-to-bracket"></i> Iniciar Sesión</button>
+        <p class="auth-switch">¿No tienes cuenta? <a href="#" id="showSignup">Regístrate</a></p>
+        <p class="auth-error" id="loginError"></p>
+      </form>
 
-    <!-- Admin Login -->
-    <div class="admin-login" id="adminLogin">
-      <div class="admin-login-box">
-        <i class="fa-solid fa-lock admin-login-icon"></i>
-        <h3>Acceso Administrativo</h3>
-        <p>Ingresa la contraseña para gestionar la tienda</p>
-        <div class="admin-login-form">
-          <input type="password" id="adminPasswordInput" placeholder="Contraseña" />
-          <button id="adminLoginBtn"><i class="fa-solid fa-arrow-right-to-bracket"></i> Ingresar</button>
+      <!-- Signup Form -->
+      <form class="auth-form hidden" id="signupForm" onsubmit="return false">
+        <div class="auth-form-group">
+          <label for="signupName">Nombre completo</label>
+          <input type="text" id="signupName" placeholder="Ej: Juan Pérez" />
         </div>
-        <p class="admin-login-error" id="adminLoginError"></p>
-      </div>
-    </div>
+        <div class="auth-form-group">
+          <label for="signupEmail">Correo electrónico</label>
+          <input type="email" id="signupEmail" placeholder="tu@correo.com" />
+        </div>
+        <div class="auth-form-group">
+          <label for="signupPassword">Contraseña</label>
+          <input type="password" id="signupPassword" placeholder="Min. 6 caracteres" />
+        </div>
+        <button type="submit" class="auth-submit" id="signupSubmit"><i class="fa-solid fa-user-plus"></i> Crear Cuenta</button>
+        <p class="auth-switch">¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión</a></p>
+        <p class="auth-error" id="signupError"></p>
+      </form>
 
-    <!-- Admin Dashboard -->
-    <div class="admin-dashboard hidden" id="adminDashboard">
-      <!-- Tabs -->
-      <div class="admin-tabs">
-        <button class="admin-tab active" data-tab="products"><i class="fa-solid fa-box"></i> Productos</button>
-        <button class="admin-tab" data-tab="orders"><i class="fa-solid fa-truck"></i> Pedidos</button>
-        <button class="admin-tab" data-tab="stats"><i class="fa-solid fa-chart-simple"></i> Estadísticas</button>
-      </div>
-
-      <!-- Tab: Products -->
-      <div class="admin-tab-content active" id="adminTabProducts">
-        <div class="admin-section-header">
-          <h3><i class="fa-solid fa-boxes"></i> Productos</h3>
-          <button class="admin-add-btn" id="adminAddProductBtn"><i class="fa-solid fa-plus"></i> Nuevo Producto</button>
-        </div>
-        <div class="admin-table-container">
-          <table class="admin-table" id="adminProductsTable">
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Categoría</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Destacado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="adminProductsBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tab: Orders -->
-      <div class="admin-tab-content" id="adminTabOrders">
-        <div class="admin-section-header">
-          <h3><i class="fa-solid fa-truck"></i> Pedidos</h3>
-        </div>
-        <div class="admin-orders-empty" id="adminOrdersEmpty">
-          <i class="fa-solid fa-receipt"></i>
-          <h3>No hay pedidos aún</h3>
-          <p>Los pedidos aparecerán aquí cuando los clientes realicen compras</p>
-        </div>
-        <div class="admin-table-container hidden" id="adminOrdersTableContainer">
-          <table class="admin-table" id="adminOrdersTable">
-            <thead>
-              <tr>
-                <th>N° Pedido</th>
-                <th>Cliente</th>
-                <th>Total</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="adminOrdersBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tab: Stats -->
-      <div class="admin-tab-content" id="adminTabStats">
-        <div class="admin-stats-grid">
-          <div class="admin-stat-card">
-            <i class="fa-solid fa-box"></i>
-            <span class="admin-stat-num" id="statProducts">0</span>
-            <span class="admin-stat-label">Productos</span>
-          </div>
-          <div class="admin-stat-card">
-            <i class="fa-solid fa-truck"></i>
-            <span class="admin-stat-num" id="statOrders">0</span>
-            <span class="admin-stat-label">Pedidos</span>
-          </div>
-          <div class="admin-stat-card">
-            <i class="fa-solid fa-dollar-sign"></i>
-            <span class="admin-stat-num" id="statRevenue">S/0</span>
-            <span class="admin-stat-label">Ventas totales</span>
-          </div>
-          <div class="admin-stat-card">
-            <i class="fa-solid fa-users"></i>
-            <span class="admin-stat-num" id="statClients">0</span>
-            <span class="admin-stat-label">Clientes</span>
+      <!-- Logged In State -->
+      <div class="auth-logged-in hidden" id="authLoggedIn">
+        <div class="auth-user-info">
+          <div class="auth-avatar" id="authAvatar">👤</div>
+          <div>
+            <div class="auth-user-name" id="authUserName">Usuario</div>
+            <div class="auth-user-email" id="authUserEmail">tu@correo.com</div>
           </div>
         </div>
+        <button class="auth-logout-btn" id="authLogoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</button>
       </div>
-    </div>
-  </div>
-
-  <!-- ===== ADMIN PRODUCT FORM (MODAL) ===== -->
-  <div class="modal-overlay hidden" id="adminFormOverlay"></div>
-  <div class="admin-form-modal" id="adminFormModal">
-    <div class="admin-form-header">
-      <h3 id="adminFormTitle"><i class="fa-solid fa-plus"></i> Nuevo Producto</h3>
-      <button class="checkout-close" id="adminFormClose"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="admin-form-body">
-      <input type="hidden" id="adminFormProductId" />
-      <div class="admin-form-row">
-        <div class="form-group">
-          <label for="adminFormName">Nombre del producto *</label>
-          <input type="text" id="adminFormName" placeholder="Ej: Arroz Extra x 5kg" />
-        </div>
-        <div class="form-group">
-          <label for="adminFormCategory">Categoría *</label>
-          <select id="adminFormCategory"></select>
-        </div>
-      </div>
-      <div class="admin-form-row">
-        <div class="form-group">
-          <label for="adminFormPrice">Precio (S/) *</label>
-          <input type="number" id="adminFormPrice" step="0.10" min="0" placeholder="0.00" />
-        </div>
-        <div class="form-group">
-          <label for="adminFormEmoji">Emoji (fallback)</label>
-          <input type="text" id="adminFormEmoji" placeholder="🍚" maxlength="8" />
-        </div>
-      </div>
-      <div class="admin-form-row">
-        <div class="form-group">
-          <label for="adminFormImageUrl">URL de imagen</label>
-          <input type="url" id="adminFormImageUrl" placeholder="https://images.unsplash.com/photo-..." />
-        </div>
-      </div>
-      <div class="admin-form-row">
-        <div class="form-group">
-          <label for="adminFormStock">Stock *</label>
-          <input type="number" id="adminFormStock" min="0" step="1" placeholder="99" />
-        </div>
-        <div class="form-group">
-          <label for="adminFormBadge">Etiqueta (opcional)</label>
-          <select id="adminFormBadge">
-            <option value="">Sin etiqueta</option>
-            <option value="Oferta">🔥 Oferta</option>
-            <option value="Nuevo">✨ Nuevo</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="adminFormDesc">Descripción</label>
-        <textarea id="adminFormDesc" placeholder="Descripción del producto" rows="2"></textarea>
-      </div>
-      <div class="admin-form-actions">
-        <button class="admin-btn-cancel" id="adminFormCancel">Cancelar</button>
-        <button class="admin-btn-save" id="adminFormSave"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-      </div>
-      <p class="admin-form-error" id="adminFormError"></p>
     </div>
   </div>
 
