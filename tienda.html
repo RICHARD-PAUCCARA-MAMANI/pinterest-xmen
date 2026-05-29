@@ -408,6 +408,7 @@
                 <th>Producto</th>
                 <th>Categoría</th>
                 <th>Precio</th>
+                <th>Stock</th>
                 <th>Destacado</th>
                 <th>Acciones</th>
               </tr>
@@ -499,6 +500,20 @@
         <div class="form-group">
           <label for="adminFormEmoji">Emoji</label>
           <input type="text" id="adminFormEmoji" placeholder="🍚" maxlength="8" />
+        </div>
+      </div>
+      <div class="admin-form-row">
+        <div class="form-group">
+          <label for="adminFormStock">Stock *</label>
+          <input type="number" id="adminFormStock" min="0" step="1" placeholder="99" />
+        </div>
+        <div class="form-group">
+          <label for="adminFormBadge">Etiqueta (opcional)</label>
+          <select id="adminFormBadge">
+            <option value="">Sin etiqueta</option>
+            <option value="Oferta">🔥 Oferta</option>
+            <option value="Nuevo">✨ Nuevo</option>
+          </select>
         </div>
       </div>
       <div class="form-group">

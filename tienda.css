@@ -684,6 +684,41 @@ input, textarea, select { font-family: inherit; outline: none; font-size: inheri
   box-shadow: 0 2px 8px rgba(46,139,87,0.3);
 }
 
+.product-card-badge.out-of-stock {
+  background: #6B7280;
+  box-shadow: 0 2px 8px rgba(107,114,128,0.3);
+}
+
+.product-card-stock {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.product-card-add.disabled {
+  background: #D1D5DB;
+  color: #9CA3AF;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.product-card-add.disabled:hover {
+  background: #D1D5DB;
+  transform: none;
+  box-shadow: none;
+}
+
+.stock-cell {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.stock-cell.out {
+  color: var(--red);
+  font-weight: 700;
+}
+
 .product-card-body {
   padding: 16px;
   flex: 1;

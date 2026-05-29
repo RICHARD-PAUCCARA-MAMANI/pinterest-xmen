@@ -1,60 +1,60 @@
 // ===== DEFAULT PRODUCTS (fallback cuando no hay datos guardados) =====
 const DEFAULT_PRODUCTS = [
   // Frutas y Verduras
-  { id: 1, name: 'Manzana Roja x kg', category: 'frutas', price: 6.50, emoji: '🍎', desc: 'Manzanas rojas frescas, dulces y crujientes. Perfectas para jugos o consumo directo.', badge: 'Oferta' },
-  { id: 2, name: 'Plátano de Seda x kg', category: 'frutas', price: 4.20, emoji: '🍌', desc: 'Plátanos dulces y suaves, ideales para postres o desayunos.' },
-  { id: 3, name: 'Papaya x kg', category: 'frutas', price: 5.00, emoji: '🍈', desc: 'Papaya jugosa y dulce, rica en vitamina C.', badge: 'Nuevo' },
-  { id: 4, name: 'Fresas x 500g', category: 'frutas', price: 7.50, emoji: '🍓', desc: 'Fresas frescas importadas, perfectas para postres y jugos.' },
-  { id: 5, name: 'Limón x kg', category: 'frutas', price: 3.80, emoji: '🍋', desc: 'Limones frescos, ideales para ceviche y bebidas.' },
-  { id: 6, name: 'Cebolla Roja x kg', category: 'frutas', price: 3.20, emoji: '🧅', desc: 'Cebolla roja nacional, ideal para ensaladas y guisos.' },
-  { id: 7, name: 'Papa Amarilla x kg', category: 'frutas', price: 4.00, emoji: '🥔', desc: 'Papa amarilla peruana, perfecta para puré y sopas.' },
-  { id: 8, name: 'Tomate Italiano x kg', category: 'frutas', price: 4.50, emoji: '🍅', desc: 'Tomates frescos y carnosos, ideales para salsas y ensaladas.' },
-  { id: 9, name: 'Aguacate x unidad', category: 'frutas', price: 3.00, emoji: '🥑', desc: 'Aguacates maduros y cremosos.', badge: 'Oferta' },
+  { id: 1, name: 'Manzana Roja x kg', category: 'frutas', price: 6.50, emoji: '🍎', desc: 'Manzanas rojas frescas, dulces y crujientes. Perfectas para jugos o consumo directo.', badge: 'Oferta', stock: 99 },
+  { id: 2, name: 'Plátano de Seda x kg', category: 'frutas', price: 4.20, emoji: '🍌', desc: 'Plátanos dulces y suaves, ideales para postres o desayunos.', stock: 99 },
+  { id: 3, name: 'Papaya x kg', category: 'frutas', price: 5.00, emoji: '🍈', desc: 'Papaya jugosa y dulce, rica en vitamina C.', badge: 'Nuevo', stock: 30 },
+  { id: 4, name: 'Fresas x 500g', category: 'frutas', price: 7.50, emoji: '🍓', desc: 'Fresas frescas importadas, perfectas para postres y jugos.', stock: 40 },
+  { id: 5, name: 'Limón x kg', category: 'frutas', price: 3.80, emoji: '🍋', desc: 'Limones frescos, ideales para ceviche y bebidas.', stock: 80 },
+  { id: 6, name: 'Cebolla Roja x kg', category: 'frutas', price: 3.20, emoji: '🧅', desc: 'Cebolla roja nacional, ideal para ensaladas y guisos.', stock: 60 },
+  { id: 7, name: 'Papa Amarilla x kg', category: 'frutas', price: 4.00, emoji: '🥔', desc: 'Papa amarilla peruana, perfecta para puré y sopas.', stock: 0 },
+  { id: 8, name: 'Tomate Italiano x kg', category: 'frutas', price: 4.50, emoji: '🍅', desc: 'Tomates frescos y carnosos, ideales para salsas y ensaladas.', stock: 50 },
+  { id: 9, name: 'Aguacate x unidad', category: 'frutas', price: 3.00, emoji: '🥑', desc: 'Aguacates maduros y cremosos.', badge: 'Oferta', stock: 25 },
   // Lácteos
-  { id: 10, name: 'Leche Fresca x 1L', category: 'lacteos', price: 5.50, emoji: '🥛', desc: 'Leche fresca pasteurizada, cremosa y nutritiva.' },
-  { id: 11, name: 'Yogurt Natural x 1L', category: 'lacteos', price: 7.00, emoji: '🫗', desc: 'Yogurt natural sin azúcar, ideal para desayunos saludables.' },
-  { id: 12, name: 'Queso Fresco x 250g', category: 'lacteos', price: 6.00, emoji: '🧀', desc: 'Queso fresco artesanal, suave y delicioso.' },
-  { id: 13, name: 'Mantequilla x 200g', category: 'lacteos', price: 8.50, emoji: '🧈', desc: 'Mantequilla cremosa, ideal para untar y hornear.' },
-  { id: 14, name: 'Huevos de Granja x 30', category: 'lacteos', price: 14.00, emoji: '🥚', desc: 'Huevos frescos de granja, ricos en proteínas.', badge: 'Oferta' },
-  { id: 15, name: 'Crema de Leche x 200ml', category: 'lacteos', price: 6.50, emoji: '🥛', desc: 'Crema de leche espesa, ideal para cocina y postres.' },
+  { id: 10, name: 'Leche Fresca x 1L', category: 'lacteos', price: 5.50, emoji: '🥛', desc: 'Leche fresca pasteurizada, cremosa y nutritiva.', stock: 99 },
+  { id: 11, name: 'Yogurt Natural x 1L', category: 'lacteos', price: 7.00, emoji: '🫗', desc: 'Yogurt natural sin azúcar, ideal para desayunos saludables.', stock: 45 },
+  { id: 12, name: 'Queso Fresco x 250g', category: 'lacteos', price: 6.00, emoji: '🧀', desc: 'Queso fresco artesanal, suave y delicioso.', stock: 30 },
+  { id: 13, name: 'Mantequilla x 200g', category: 'lacteos', price: 8.50, emoji: '🧈', desc: 'Mantequilla cremosa, ideal para untar y hornear.', stock: 40 },
+  { id: 14, name: 'Huevos de Granja x 30', category: 'lacteos', price: 14.00, emoji: '🥚', desc: 'Huevos frescos de granja, ricos en proteínas.', badge: 'Oferta', stock: 60 },
+  { id: 15, name: 'Crema de Leche x 200ml', category: 'lacteos', price: 6.50, emoji: '🥛', desc: 'Crema de leche espesa, ideal para cocina y postres.', stock: 35 },
   // Panadería
-  { id: 16, name: 'Pan Molde Integral x 500g', category: 'panaderia', price: 7.50, emoji: '🍞', desc: 'Pan integral suave y nutritivo, rico en fibra.' },
-  { id: 17, name: 'Pan Francés x unidad', category: 'panaderia', price: 1.50, emoji: '🥖', desc: 'Pan francés crujiente, horneado diariamente.' },
-  { id: 18, name: 'Tortillas de Harina x 6', category: 'panaderia', price: 5.00, emoji: '🫓', desc: 'Tortillas suaves, perfectas para wraps y tacos.' },
-  { id: 19, name: 'Galletas de Avena x 200g', category: 'panaderia', price: 6.00, emoji: '🍪', desc: 'Galletas caseras de avena con pasas.' },
+  { id: 16, name: 'Pan Molde Integral x 500g', category: 'panaderia', price: 7.50, emoji: '🍞', desc: 'Pan integral suave y nutritivo, rico en fibra.', stock: 50 },
+  { id: 17, name: 'Pan Francés x unidad', category: 'panaderia', price: 1.50, emoji: '🥖', desc: 'Pan francés crujiente, horneado diariamente.', stock: 0 },
+  { id: 18, name: 'Tortillas de Harina x 6', category: 'panaderia', price: 5.00, emoji: '🫓', desc: 'Tortillas suaves, perfectas para wraps y tacos.', stock: 30 },
+  { id: 19, name: 'Galletas de Avena x 200g', category: 'panaderia', price: 6.00, emoji: '🍪', desc: 'Galletas caseras de avena con pasas.', stock: 0 },
   // Bebidas
-  { id: 20, name: 'Agua Mineral x 1.5L', category: 'bebidas', price: 3.00, emoji: '💧', desc: 'Agua mineral natural, hidratación pura.' },
-  { id: 21, name: 'Gaseosa Cola x 2L', category: 'bebidas', price: 7.00, emoji: '🥤', desc: 'Gaseosa cola para compartir en familia.' },
-  { id: 22, name: 'Jugo de Naranja x 1L', category: 'bebidas', price: 8.00, emoji: '🍊', desc: 'Jugo de naranja natural, sin azúcar añadida.', badge: 'Nuevo' },
-  { id: 23, name: 'Cerveza Artesanal x 330ml', category: 'bebidas', price: 12.00, emoji: '🍺', desc: 'Cerveza artesanal local, sabor único.' },
-  { id: 24, name: 'Inca Kola x 2L', category: 'bebidas', price: 7.50, emoji: '🥤', desc: 'La gaseosa peruana más tradicional.' },
-  { id: 25, name: 'Café Molido x 250g', category: 'bebidas', price: 15.00, emoji: '☕', desc: 'Café peruano de altura, molido y aromático.', badge: 'Oferta' },
+  { id: 20, name: 'Agua Mineral x 1.5L', category: 'bebidas', price: 3.00, emoji: '💧', desc: 'Agua mineral natural, hidratación pura.', stock: 99 },
+  { id: 21, name: 'Gaseosa Cola x 2L', category: 'bebidas', price: 7.00, emoji: '🥤', desc: 'Gaseosa cola para compartir en familia.', stock: 99 },
+  { id: 22, name: 'Jugo de Naranja x 1L', category: 'bebidas', price: 8.00, emoji: '🍊', desc: 'Jugo de naranja natural, sin azúcar añadida.', badge: 'Nuevo', stock: 20 },
+  { id: 23, name: 'Cerveza Artesanal x 330ml', category: 'bebidas', price: 12.00, emoji: '🍺', desc: 'Cerveza artesanal local, sabor único.', stock: 25 },
+  { id: 24, name: 'Inca Kola x 2L', category: 'bebidas', price: 7.50, emoji: '🥤', desc: 'La gaseosa peruana más tradicional.', stock: 80 },
+  { id: 25, name: 'Café Molido x 250g', category: 'bebidas', price: 15.00, emoji: '☕', desc: 'Café peruano de altura, molido y aromático.', badge: 'Oferta', stock: 15 },
   // Despensa
-  { id: 26, name: 'Arroz Extra x 5kg', category: 'despensa', price: 18.50, emoji: '🍚', desc: 'Arroz extra premium, el mejor para tu mesa.', badge: 'Oferta' },
-  { id: 27, name: 'Fideos Spaghetti x 500g', category: 'despensa', price: 4.00, emoji: '🍝', desc: 'Fideos de pasta dura, cocción perfecta.' },
-  { id: 28, name: 'Aceite Vegetal x 1L', category: 'despensa', price: 9.00, emoji: '🫒', desc: 'Aceite vegetal puro, ideal para cocinar.' },
-  { id: 29, name: 'Azúcar Blanca x 2kg', category: 'despensa', price: 7.00, emoji: '🍬', desc: 'Azúcar blanca refinada, endulza tus comidas.' },
-  { id: 30, name: 'Sal de Mesa x 500g', category: 'despensa', price: 2.00, emoji: '🧂', desc: 'Sal de mesa fina, yodada.' },
-  { id: 31, name: 'Lentejas x 500g', category: 'despensa', price: 5.50, emoji: '🫘', desc: 'Lentejas seleccionadas, ricas en hierro.' },
-  { id: 32, name: 'Atún en Lata x 170g', category: 'despensa', price: 5.00, emoji: '🥫', desc: 'Atún en aceite vegetal, práctico y delicioso.' },
-  { id: 33, name: 'Salsa de Tomate x 500g', category: 'despensa', price: 6.50, emoji: '🥫', desc: 'Salsa de tomate casera, lista para usar.' },
+  { id: 26, name: 'Arroz Extra x 5kg', category: 'despensa', price: 18.50, emoji: '🍚', desc: 'Arroz extra premium, el mejor para tu mesa.', badge: 'Oferta', stock: 99 },
+  { id: 27, name: 'Fideos Spaghetti x 500g', category: 'despensa', price: 4.00, emoji: '🍝', desc: 'Fideos de pasta dura, cocción perfecta.', stock: 99 },
+  { id: 28, name: 'Aceite Vegetal x 1L', category: 'despensa', price: 9.00, emoji: '🫒', desc: 'Aceite vegetal puro, ideal para cocinar.', stock: 70 },
+  { id: 29, name: 'Azúcar Blanca x 2kg', category: 'despensa', price: 7.00, emoji: '🍬', desc: 'Azúcar blanca refinada, endulza tus comidas.', stock: 60 },
+  { id: 30, name: 'Sal de Mesa x 500g', category: 'despensa', price: 2.00, emoji: '🧂', desc: 'Sal de mesa fina, yodada.', stock: 90 },
+  { id: 31, name: 'Lentejas x 500g', category: 'despensa', price: 5.50, emoji: '🫘', desc: 'Lentejas seleccionadas, ricas en hierro.', stock: 50 },
+  { id: 32, name: 'Atún en Lata x 170g', category: 'despensa', price: 5.00, emoji: '🥫', desc: 'Atún en aceite vegetal, práctico y delicioso.', stock: 40 },
+  { id: 33, name: 'Salsa de Tomate x 500g', category: 'despensa', price: 6.50, emoji: '🥫', desc: 'Salsa de tomate casera, lista para usar.', stock: 30 },
   // Limpieza
-  { id: 34, name: 'Detergente Líquido x 1L', category: 'limpieza', price: 12.00, emoji: '🧴', desc: 'Detergente líquido concentrado, fresco aroma.' },
-  { id: 35, name: 'Lavavajillas x 750ml', category: 'limpieza', price: 8.00, emoji: '🧼', desc: 'Lavavajillas líquido con poder desengrasante.' },
-  { id: 36, name: 'Lejía x 1L', category: 'limpieza', price: 4.50, emoji: '🧪', desc: 'Lejía concentrada, desinfección total.' },
-  { id: 37, name: 'Papel Higiénico x 12 rollos', category: 'limpieza', price: 16.00, emoji: '🧻', desc: 'Papel higiénico suave, triple hoja.', badge: 'Oferta' },
-  { id: 38, name: 'Esponja Multiusos x 3', category: 'limpieza', price: 4.00, emoji: '🧽', desc: 'Esponjas resistentes para limpieza general.' },
+  { id: 34, name: 'Detergente Líquido x 1L', category: 'limpieza', price: 12.00, emoji: '🧴', desc: 'Detergente líquido concentrado, fresco aroma.', stock: 55 },
+  { id: 35, name: 'Lavavajillas x 750ml', category: 'limpieza', price: 8.00, emoji: '🧼', desc: 'Lavavajillas líquido con poder desengrasante.', stock: 40 },
+  { id: 36, name: 'Lejía x 1L', category: 'limpieza', price: 4.50, emoji: '🧪', desc: 'Lejía concentrada, desinfección total.', stock: 60 },
+  { id: 37, name: 'Papel Higiénico x 12 rollos', category: 'limpieza', price: 16.00, emoji: '🧻', desc: 'Papel higiénico suave, triple hoja.', badge: 'Oferta', stock: 35 },
+  { id: 38, name: 'Esponja Multiusos x 3', category: 'limpieza', price: 4.00, emoji: '🧽', desc: 'Esponjas resistentes para limpieza general.', stock: 50 },
   // Snacks
-  { id: 39, name: 'Papas Fritas x 150g', category: 'snacks', price: 5.00, emoji: '🍟', desc: 'Papas fritas crocantes, sabor original.' },
-  { id: 40, name: 'Chocolate con Leche x 100g', category: 'snacks', price: 7.00, emoji: '🍫', desc: 'Chocolate cremoso con leche, irresistible.' },
-  { id: 41, name: 'Mix de Frutos Secos x 200g', category: 'snacks', price: 12.00, emoji: '🥜', desc: 'Mix de almendras, nueces y pasas.', badge: 'Nuevo' },
-  { id: 42, name: 'Chizitos x 200g', category: 'snacks', price: 4.50, emoji: '🫘', desc: 'Snack crocante de maíz, sabor queso.' },
+  { id: 39, name: 'Papas Fritas x 150g', category: 'snacks', price: 5.00, emoji: '🍟', desc: 'Papas fritas crocantes, sabor original.', stock: 0 },
+  { id: 40, name: 'Chocolate con Leche x 100g', category: 'snacks', price: 7.00, emoji: '🍫', desc: 'Chocolate cremoso con leche, irresistible.', stock: 30 },
+  { id: 41, name: 'Mix de Frutos Secos x 200g', category: 'snacks', price: 12.00, emoji: '🥜', desc: 'Mix de almendras, nueces y pasas.', badge: 'Nuevo', stock: 20 },
+  { id: 42, name: 'Chizitos x 200g', category: 'snacks', price: 4.50, emoji: '🫘', desc: 'Snack crocante de maíz, sabor queso.', stock: 45 },
   // Carnes y Pollo
-  { id: 43, name: 'Pollo Entero x 2kg', category: 'carnes', price: 22.00, emoji: '🍗', desc: 'Pollo fresco de corral, criado sin hormonas.', badge: 'Oferta' },
-  { id: 44, name: 'Carne Molida x 500g', category: 'carnes', price: 15.00, emoji: '🥩', desc: 'Carne molida de res, 90% magra.' },
-  { id: 45, name: 'Pechuga de Pollo x 500g', category: 'carnes', price: 13.00, emoji: '🍗', desc: 'Pechuga de pollo fresca, sin piel.' },
-  { id: 46, name: 'Chorizo Parrillero x 400g', category: 'carnes', price: 14.00, emoji: '🌭', desc: 'Chorizo artesanal para parrilla, especias únicas.' },
-  { id: 47, name: 'Pescado Fresco x 500g', category: 'carnes', price: 18.00, emoji: '🐟', desc: 'Filete de pescado fresco del día.', badge: 'Nuevo' }
+  { id: 43, name: 'Pollo Entero x 2kg', category: 'carnes', price: 22.00, emoji: '🍗', desc: 'Pollo fresco de corral, criado sin hormonas.', badge: 'Oferta', stock: 20 },
+  { id: 44, name: 'Carne Molida x 500g', category: 'carnes', price: 15.00, emoji: '🥩', desc: 'Carne molida de res, 90% magra.', stock: 25 },
+  { id: 45, name: 'Pechuga de Pollo x 500g', category: 'carnes', price: 13.00, emoji: '🍗', desc: 'Pechuga de pollo fresca, sin piel.', stock: 0 },
+  { id: 46, name: 'Chorizo Parrillero x 400g', category: 'carnes', price: 14.00, emoji: '🌭', desc: 'Chorizo artesanal para parrilla, especias únicas.', stock: 30 },
+  { id: 47, name: 'Pescado Fresco x 500g', category: 'carnes', price: 18.00, emoji: '🐟', desc: 'Filete de pescado fresco del día.', badge: 'Nuevo', stock: 15 }
 ];
 
 const CATEGORIES = [
@@ -112,7 +112,8 @@ class ProductManager {
       price: parseFloat(data.price) || 0,
       emoji: data.emoji || '📦',
       desc: data.desc ? data.desc.trim() : '',
-      badge: data.badge || ''
+      badge: data.badge || '',
+      stock: data.stock !== undefined ? parseInt(data.stock) : 99
     };
     this._products.push(product);
     this._save();
@@ -130,6 +131,7 @@ class ProductManager {
     if (data.emoji !== undefined) product.emoji = data.emoji || '📦';
     if (data.desc !== undefined) product.desc = data.desc.trim();
     if (data.badge !== undefined) product.badge = data.badge;
+    if (data.stock !== undefined) product.stock = parseInt(data.stock) || 0;
     this._save();
     this._notify();
     return product;
@@ -274,7 +276,16 @@ class Cart {
   }
 
   add(productId, quantity = 1) {
+    const product = productManager.getById(productId);
+    if (!product) return false;
+    if (product.stock !== undefined && product.stock <= 0) {
+      return false;
+    }
     const existing = this.items.find(item => item.productId === productId);
+    const currentQty = existing ? existing.quantity : 0;
+    if (product.stock !== undefined && currentQty + quantity > product.stock) {
+      return false;
+    }
     if (existing) {
       existing.quantity += quantity;
     } else {
@@ -486,6 +497,7 @@ const adminFormPrice = document.getElementById('adminFormPrice');
 const adminFormEmoji = document.getElementById('adminFormEmoji');
 const adminFormDesc = document.getElementById('adminFormDesc');
 const adminFormBadge = document.getElementById('adminFormBadge');
+const adminFormStock = document.getElementById('adminFormStock');
 const adminFormSave = document.getElementById('adminFormSave');
 const adminFormError = document.getElementById('adminFormError');
 
@@ -578,24 +590,27 @@ function createProductCard(product, index) {
     ? `<span class="product-card-badge ${product.badge === 'Nuevo' ? 'new' : ''}">${product.badge === 'Oferta' ? '🔥 ' : '✨ '}${product.badge}</span>`
     : '';
 
+  const outOfStock = product.stock <= 0;
   const cartItem = cart.items.find(i => i.productId === product.id);
   const inCart = cartItem ? cartItem.quantity : 0;
+  const maxReached = outOfStock || (!outOfStock && product.stock !== undefined && inCart >= product.stock);
 
   card.innerHTML = `
     <div class="product-card-image">
       <span class="product-emoji">${product.emoji || '📦'}</span>
-      ${badgeHtml}
+      ${outOfStock ? '<span class="product-card-badge out-of-stock">❌ Agotado</span>' : badgeHtml}
     </div>
     <div class="product-card-body">
       <div class="product-card-category">${getCategoryName(product.category)}</div>
       <div class="product-card-name">${escapeHtml(product.name)}</div>
+      ${!outOfStock && product.stock !== undefined ? `<div class="product-card-stock">📦 Stock: ${product.stock} unid.</div>` : ''}
       <div class="product-card-desc">${escapeHtml(product.desc)}</div>
       <div class="product-card-footer">
         <div class="product-card-price">
           ${formatPrice(product.price)}
         </div>
-        <button class="product-card-add ${inCart > 0 ? 'added' : ''}" data-action="add" title="${inCart > 0 ? 'Agregar otro' : 'Agregar al carrito'}">
-          <i class="fa-solid ${inCart > 0 ? 'fa-check' : 'fa-plus'}"></i>
+        <button class="product-card-add ${inCart > 0 ? 'added' : ''} ${maxReached ? 'disabled' : ''}" data-action="add" ${maxReached ? 'disabled' : ''} title="${outOfStock ? 'Producto agotado' : (maxReached ? 'Stock máximo alcanzado' : (inCart > 0 ? 'Agregar otro' : 'Agregar al carrito'))}">
+          <i class="fa-solid ${outOfStock ? 'fa-ban' : (maxReached ? 'fa-ban' : (inCart > 0 ? 'fa-check' : 'fa-plus'))}"></i>
         </button>
       </div>
     </div>
@@ -604,7 +619,19 @@ function createProductCard(product, index) {
   const addBtn = card.querySelector('[data-action="add"]');
   addBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    cart.add(product.id);
+    if (outOfStock) {
+      showToast('❌ Producto agotado');
+      return;
+    }
+    if (maxReached) {
+      showToast('❌ Stock máximo alcanzado en el carrito');
+      return;
+    }
+    const success = cart.add(product.id);
+    if (!success) {
+      showToast('❌ No hay suficiente stock disponible');
+      return;
+    }
     showToast(`${product.name} agregado al carrito`);
     addBtn.innerHTML = '<i class="fa-solid fa-check"></i>';
     addBtn.classList.add('added');
@@ -984,6 +1011,7 @@ function renderAdminProducts() {
       </td>
       <td><span class="category-cell">${getCategoryName(p.category)}</span></td>
       <td><span class="price-cell">${formatPrice(p.price)}</span></td>
+      <td><span class="stock-cell ${p.stock <= 0 ? 'out' : ''}">${p.stock !== undefined ? p.stock : '—'}</span></td>
       <td class="badge-cell">${p.badge ? `<span class="badge-tag ${p.badge === 'Oferta' ? 'oferta' : 'nuevo'}">${p.badge}</span>` : '—'}</td>
       <td>
         <div class="admin-actions">
@@ -1138,6 +1166,7 @@ function openAdminForm(productId) {
     adminFormEmoji.value = product.emoji || '';
     adminFormDesc.value = product.desc;
     adminFormBadge.value = product.badge || '';
+    adminFormStock.value = product.stock !== undefined ? product.stock : 99;
   } else {
     // New product
     adminFormTitle.innerHTML = '<i class="fa-solid fa-plus"></i> Nuevo Producto';
@@ -1147,6 +1176,7 @@ function openAdminForm(productId) {
     adminFormEmoji.value = '';
     adminFormDesc.value = '';
     adminFormBadge.value = '';
+    adminFormStock.value = '99';
   }
 
   adminFormOverlay.classList.remove('hidden');
@@ -1167,11 +1197,13 @@ function handleSaveProduct() {
   const emoji = adminFormEmoji.value.trim();
   const desc = adminFormDesc.value.trim();
   const badge = adminFormBadge.value;
+  const stock = adminFormStock.value;
 
   if (!name) { adminFormError.textContent = 'El nombre del producto es obligatorio'; adminFormName.focus(); return; }
   if (!price || isNaN(price) || parseFloat(price) <= 0) { adminFormError.textContent = 'Ingresa un precio válido'; adminFormPrice.focus(); return; }
+  if (stock === '' || isNaN(stock) || parseInt(stock) < 0) { adminFormError.textContent = 'Ingresa un stock válido (0 o más)'; adminFormStock.focus(); return; }
 
-  const data = { name, category, price, emoji, desc, badge };
+  const data = { name, category, price, emoji, desc, badge, stock };
 
   if (id) {
     productManager.update(id, data);
