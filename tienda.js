@@ -1122,11 +1122,28 @@ function closeOrderHistory() {
 }
 
 function renderOrderHistory() {
-  let orders = userAuth.isLoggedIn()
-    ? orderHistory.getOrdersByUser(userAuth.currentUser.email)
-    : orderHistory.getAll();
+  if (!userAuth.isLoggedIn()) {
+    orderHistoryEmpty.innerHTML = `
+      <i class="fa-solid fa-user-lock"></i>
+      <h3>Inicia sesión para ver tus pedidos</h3>
+      <p>Necesitas iniciar sesión para consultar el historial de tus compras</p>
+      <button class="cart-empty-btn" onclick="openAuth()">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Iniciar Sesión
+      </button>
+    `;
+    orderHistoryEmpty.classList.remove('hidden');
+    orderHistoryList.classList.add('hidden');
+    return;
+  }
+
+  const orders = orderHistory.getOrdersByUser(userAuth.currentUser.email);
 
   if (orders.length === 0) {
+    orderHistoryEmpty.innerHTML = `
+      <i class="fa-solid fa-receipt"></i>
+      <h3>No tienes pedidos aún</h3>
+      <p>Cuando realices una compra, el pedido aparecerá aquí</p>
+    `;
     orderHistoryEmpty.classList.remove('hidden');
     orderHistoryList.classList.add('hidden');
     return;
